@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.pattern.imagej
+OpenIDE-Module-Localizing-Bundle: org/pattern/imagej/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+

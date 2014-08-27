@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.pattern.commons.io
+OpenIDE-Module-Localizing-Bundle: org/pattern/commons/io/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+

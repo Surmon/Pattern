@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.surmon.pattern.editor.table
+OpenIDE-Module-Localizing-Bundle: org/surmon/pattern/editor/table/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+

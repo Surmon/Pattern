@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.apisupport.project</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/nb-module-project/3">
+            <code-name-base>org.pattern.imagej</code-name-base>
+            <standalone/>
+            <module-dependencies/>
+            <public-packages>
+                <package>ij</package>
+                <package>ij.gui</package>
+                <package>ij.io</package>
+                <package>ij.macro</package>
+                <package>ij.measure</package>
+                <package>ij.plugin</package>
+                <package>ij.plugin.filter</package>
+                <package>ij.plugin.frame</package>
+                <package>ij.process</package>
+                <package>ij.text</package>
+                <package>ij.util</package>
+            </public-packages>
+            <class-path-extension>
+                <runtime-relative-path>ext/ij144o.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/ij144o.jar</binary-origin>
+            </class-path-extension>
+        </data>
+    </configuration>
+</project>

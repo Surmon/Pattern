@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.surmon.pattern.visualization2d
+OpenIDE-Module-Localizing-Bundle: org/surmon/pattern/editor2d/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+

@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.surmon.processing
+OpenIDE-Module-Localizing-Bundle: org/surmon/processing/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
