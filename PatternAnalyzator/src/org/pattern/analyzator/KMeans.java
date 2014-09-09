@@ -8,8 +8,6 @@ package org.pattern.analyzator;
 import java.util.*;
 import org.pattern.analyzator.metric.Metric;
 import org.pattern.analyzator.metric.MetricFactory;
-import org.pattern.analyzator.metric.SizeMetric;
-import org.surmon.pattern.api.CircleParticle;
 import org.surmon.pattern.api.Particle;
 
 /**

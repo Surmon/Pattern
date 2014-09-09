@@ -2,6 +2,7 @@ package org.surmon.pattern.api;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 import org.opencv.core.Mat;
@@ -66,8 +67,16 @@ public class PatternImage {
      *
      * @param detection detection to add
      */
-    public void addParticle(CircleParticle detection) {
+    public void addParticle(Particle detection) {
         particles.add(detection);
+    }
+    
+    /**
+     * Adds multiple detections to this image.
+     * @param particles 
+     */
+    public void addParticles(Collection<? extends Particle> particles){
+        this.particles.addAll(particles);
     }
 
     /**

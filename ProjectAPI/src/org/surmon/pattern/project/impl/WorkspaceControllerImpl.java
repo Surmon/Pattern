@@ -9,10 +9,8 @@ import java.util.*;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.windows.TopComponent;
-import org.openide.windows.WindowManager;
 import org.surmon.pattern.project.api.*;
-import org.surmon.pattern.project.spi.ProjectEditor;
-import org.surmon.pattern.project.spi.ProjectExplorer;
+import org.surmon.pattern.project.spi.ProjectEditorCreator;
 
 /**
  *
@@ -28,7 +26,7 @@ public class WorkspaceControllerImpl implements WorkspaceController {
     public void openProject(Project project) {
         TopComponent tc = findTopComponent(project);
         if (tc == null) {
-            ProjectEditorImpl editor = new ProjectEditorImpl();
+            ProjectMultiEditor editor = new ProjectMultiEditor();
             tc = editor.getEditor(project);
             tc.open();
         }
@@ -85,9 +83,9 @@ public class WorkspaceControllerImpl implements WorkspaceController {
     }
 
     public TopComponent findTopComponent(Project project) {
-        Collection<? extends ProjectEditor> editors = Lookup.getDefault().lookupAll(ProjectEditor.class);
+        Collection<? extends ProjectEditorCreator> editors = Lookup.getDefault().lookupAll(ProjectEditorCreator.class);
         
-        for (ProjectEditor editor : editors) {
+        for (ProjectEditorCreator editor : editors) {
             if(editor.isEditorFor(project)){
                 return editor.getEditor(project);
             }

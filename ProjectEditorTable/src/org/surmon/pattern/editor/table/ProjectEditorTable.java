@@ -7,10 +7,7 @@ package org.surmon.pattern.editor.table;
 
 import org.netbeans.core.spi.multiview.MultiViewDescription;
 import org.openide.util.lookup.ServiceProvider;
-import org.openide.windows.TopComponent;
-import org.surmon.pattern.api.PatternData;
 import org.surmon.pattern.project.api.Project;
-import org.surmon.pattern.project.spi.ProjectEditor;
 import org.surmon.pattern.project.spi.ProjectEditorDescFactory;
 
 /**

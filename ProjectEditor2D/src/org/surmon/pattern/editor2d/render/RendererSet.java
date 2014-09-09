@@ -6,6 +6,7 @@
 
 package org.surmon.pattern.editor2d.render;
 
+import org.surmon.pattern.visualization.api.ParticleRenderer;
 import java.util.HashMap;
 import java.util.Map;
 import org.surmon.pattern.api.Particle;
@@ -25,8 +26,12 @@ public class RendererSet {
      * @param clazz
      * @param renderer 
      */
-    private void registerRenderer(Class<? extends Particle> clazz, ParticleRenderer renderer){
+    public void registerRenderer(Class<? extends Particle> clazz, ParticleRenderer renderer){
         renderers.put(clazz, renderer);
+    }
+    
+    public void registerRenderer(ParticleRenderer renderer){
+        registerRenderer(renderer.renders(), renderer);
     }
     
     /**
@@ -34,7 +39,7 @@ public class RendererSet {
      * @param particle
      * @return 
      */
-    private ParticleRenderer findRenderer(Particle particle){
+    public ParticleRenderer findRenderer(Particle particle){
         Class<? extends Particle> c = particle.getClass();
         return renderers.get(c);
     }

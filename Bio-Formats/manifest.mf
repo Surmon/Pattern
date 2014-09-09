@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-OpenIDE-Module: org.pattern.bioformats
-OpenIDE-Module-Localizing-Bundle: org/pattern/bioformats/Bundle.properties
+OpenIDE-Module: org.surmon.pattern.bioformats
+OpenIDE-Module-Localizing-Bundle: org/surmon/pattern/bioformats/Bundle.properties
 OpenIDE-Module-Specification-Version: 1.0
 

@@ -17,7 +17,7 @@ import org.openide.awt.*;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
-import org.surmon.pattern.api.PatternData;
+import org.surmon.pattern.api.ImageStack;
 import org.surmon.pattern.api.PatternImage;
 import org.surmon.pattern.api.utils.ImageConverter;
 import org.surmon.pattern.project.api.Project;
@@ -75,7 +75,7 @@ public final class ExportAction implements ActionListener {
                 }
                 ImageEncoder encoder = ImageCodec.createImageEncoder("tiff", out, params);
 
-                PatternData data = project.getLookup().lookup(PatternData.class);
+                ImageStack data = project.getLookup().lookup(ImageStack.class);
                 List<BufferedImage> images = new ArrayList<>();
                 
                 for (PatternImage image : data.getImages()) {

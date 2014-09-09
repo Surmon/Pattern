@@ -16,7 +16,7 @@ import org.openide.awt.UndoRedo;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
-import org.surmon.pattern.api.PatternData;
+import org.surmon.pattern.api.ImageStack;
 import org.surmon.pattern.project.api.Project;
 
 /**
@@ -31,7 +31,7 @@ public class MultiViewLabPanel extends JPanel implements MultiViewElement {
     private MultiViewElementCallback callback = null;
     
     private final JToolBar toolbar = new JToolBar();
-    private final PatternData data;
+    private final ImageStack data;
     private JScrollPane scrollPane;
     private PatternImageDataTableModel tableModel;
     private JButton exportButton;
@@ -43,7 +43,7 @@ public class MultiViewLabPanel extends JPanel implements MultiViewElement {
 
     public MultiViewLabPanel(Project project) {
         super(new BorderLayout());
-        this.data = project.getLookup().lookup(PatternData.class);
+        this.data = project.getLookup().lookup(ImageStack.class);
         tableModel = new PatternImageDataTableModel(data);
         
         ic.set(Collections.singleton(project), null);

@@ -16,10 +16,10 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.openide.util.Exceptions;
 import org.openide.util.lookup.ServiceProvider;
-import org.surmon.pattern.api.PatternData;
+import org.surmon.pattern.api.ImageStack;
+import org.surmon.pattern.api.PDataImporter;
 import org.surmon.pattern.api.PatternImage;
 import org.surmon.pattern.api.PatternInfo;
-import org.surmon.pattern.api.PDataImporter;
 
 /**
  *
@@ -32,7 +32,7 @@ public class TIFFImporter implements PDataImporter {
     private ProgressHandle p;
     
     @Override
-    public PatternData importData(String path) {
+    public ImageStack importData(String path) {
 
         //get image reader for tiff
         final BufferedImageReader reader = new BufferedImageReader();
@@ -62,7 +62,7 @@ public class TIFFImporter implements PDataImporter {
             Exceptions.printStackTrace(ex);
         }
 
-        return new PatternData(Arrays.asList(images));
+        return new ImageStack(Arrays.asList(images));
     }
     
     /**

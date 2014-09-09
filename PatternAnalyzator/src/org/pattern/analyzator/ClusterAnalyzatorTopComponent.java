@@ -17,7 +17,7 @@ import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
-import org.surmon.pattern.api.PatternData;
+import org.surmon.pattern.api.ImageStack;
 import org.surmon.pattern.api.PatternImage;
 import org.surmon.pattern.api.analysis.Analysis;
 
@@ -57,8 +57,8 @@ public final class ClusterAnalyzatorTopComponent extends TopComponent implements
     private JButton deleteAnalysisBtn;
     private AnalysisListView analysisListView;
 
-    private Lookup.Result<PatternData> result = null;
-    private PatternData data;
+    private Lookup.Result<ImageStack> result = null;
+    private ImageStack data;
 
     public ClusterAnalyzatorTopComponent() {
         initComponents();
@@ -145,7 +145,7 @@ public final class ClusterAnalyzatorTopComponent extends TopComponent implements
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
-        result = Utilities.actionsGlobalContext().lookupResult(PatternData.class);
+        result = Utilities.actionsGlobalContext().lookupResult(ImageStack.class);
         result.addLookupListener(this);
         // check for openedTopComponent of file, if found get's it's content
         // else display empty content and wait for some data to be opened
@@ -175,7 +175,7 @@ public final class ClusterAnalyzatorTopComponent extends TopComponent implements
         repaint();
     }
 
-    public void setData(PatternData data) {
+    public void setData(ImageStack data) {
         this.data = data;
         if (data != null) {
             addAnalysisBtn.setEnabled(true);
@@ -191,7 +191,7 @@ public final class ClusterAnalyzatorTopComponent extends TopComponent implements
 
     @Override
     public void resultChanged(LookupEvent ev) {
-        Collection<? extends PatternData> datas = result.allInstances();
+        Collection<? extends ImageStack> datas = result.allInstances();
         if (!datas.isEmpty()) {
             setData(datas.iterator().next());
         }

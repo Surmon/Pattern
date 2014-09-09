@@ -5,22 +5,20 @@
  */
 package org.surmon.pattern.visualization;
 
-import org.surmon.pattern.visualization.d3.VisualizationCanvas3D;
-import com.jogamp.opengl.util.FPSAnimator;
 import java.awt.BorderLayout;
 import java.util.Collection;
 import java.util.logging.Logger;
-import javax.media.opengl.GLContext;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
-import org.surmon.pattern.api.PatternData;
+import org.openide.windows.TopComponent;
+import org.surmon.pattern.api.PatternData3D;
+import org.surmon.pattern.visualization.d3.VisualizationCanvas3D;
 import org.surmon.pattern.visualization.d3.VisualizationToolbar3D;
 import org.surmon.pattern.visualization.d3.tf.TransferFunction;
 
@@ -133,7 +131,7 @@ public final class VisualizationTopComponent extends TopComponent implements Loo
      *
      * @param data
      */
-    public void setData(PatternData data) {
+    public void setData(PatternData3D data) {
         canvas.stop();
         Logger.getLogger(TAG).info("Setting image ...");
         canvas.setImage(data);

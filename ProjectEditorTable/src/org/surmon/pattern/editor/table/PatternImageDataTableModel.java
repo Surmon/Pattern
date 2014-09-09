@@ -19,9 +19,9 @@ public class PatternImageDataTableModel extends AbstractTableModel {
     private static final int BASIC_COLUMNS = 6;
     private static final String[] COLUMN_NAMES = {"#", "X", "Y", "Size", "Selected", "Type"};
 
-    private final PatternData data;
+    private final ImageStack data;
 
-    public PatternImageDataTableModel(final PatternData data) {
+    public PatternImageDataTableModel(final ImageStack data) {
         this.data = data;
     }
 

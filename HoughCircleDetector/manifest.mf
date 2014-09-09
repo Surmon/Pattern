@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.surmon.pattern.detector.houghcircle
+OpenIDE-Module-Localizing-Bundle: org/surmon/pattern/detector/houghcircle/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+

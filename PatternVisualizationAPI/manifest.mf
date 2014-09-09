@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-OpenIDE-Module: org.surmon.pattern.visualizationapi
-OpenIDE-Module-Localizing-Bundle: org/surmon/pattern/visualizationapi/Bundle.properties
+OpenIDE-Module: org.surmon.pattern.visualization.api
+OpenIDE-Module-Localizing-Bundle: org/surmon/pattern/visualization/api/Bundle.properties
 OpenIDE-Module-Specification-Version: 1.0
 

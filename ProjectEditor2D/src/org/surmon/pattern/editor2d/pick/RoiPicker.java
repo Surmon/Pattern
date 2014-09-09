@@ -8,7 +8,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
-import org.surmon.pattern.api.CircleParticle;
 import org.surmon.pattern.api.Particle;
 
 /**

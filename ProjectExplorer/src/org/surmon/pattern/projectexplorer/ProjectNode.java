@@ -19,10 +19,8 @@ import org.openide.util.Lookup;
 import org.openide.util.actions.*;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
-import org.openide.windows.TopComponent;
-import org.openide.windows.WindowManager;
 import org.surmon.pattern.api.PDataImporter;
-import org.surmon.pattern.api.PatternData;
+import org.surmon.pattern.api.ImageStack;
 import org.surmon.pattern.api.PatternInfo;
 import org.surmon.pattern.project.api.*;
 
@@ -53,7 +51,7 @@ public class ProjectNode extends BeanNode<Project> implements ProjectInfoListene
             public void open() {
                 WorkspaceController controller = Lookup.getDefault().lookup(WorkspaceController.class);
                 
-                PatternData data = project.getLookup().lookup(PatternData.class);
+                ImageStack data = project.getLookup().lookup(ImageStack.class);
                 PatternInfo info = project.getLookup().lookup(PatternInfo.class);
                 if(data == null){
                     // load data                     

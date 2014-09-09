@@ -25,7 +25,7 @@ import javax.media.opengl.awt.GLCanvas;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import org.surmon.pattern.api.DetectedSphere;
-import org.surmon.pattern.api.PatternData;
+import org.surmon.pattern.api.PatternData3D;
 import static org.surmon.pattern.visualization.d3.VisualizationCanvas3DState.DEFAULT;
 import org.surmon.pattern.visualization.d3.camera.*;
 import org.surmon.pattern.visualization.d3.data.*;
@@ -50,7 +50,7 @@ public class VisualizationCanvas3D extends GLCanvas implements GLEventListener, 
     public static final String SHADER_ROOT = "gl/shader/";
 
     // Data structure
-    private PatternData data;
+    private PatternData3D data;
     private ICamera camera;
     private FPSAnimator animator;
     private VisualizationMouseInputAdapter mouseAdapter;
@@ -171,8 +171,8 @@ public class VisualizationCanvas3D extends GLCanvas implements GLEventListener, 
             int id = 1;
             
             // scale model to fit the bounding box and visualize them
-            if (data.getDetectedObjects() != null) {
-                for (DetectedSphere s : data.getDetectedObjects()) {
+            if (data.getDetectedParticles() != null) {
+                for (DetectedSphere s : data.getDetectedParticles()) {
                     Vec3 pos = bb.fromImageCoords(s.getX(), s.getY(), s.getZ());
                     float scale = (float) s.getR() / bb.getMax();
                     Model sModel = new Model(id, pos, scale);
@@ -262,7 +262,7 @@ public class VisualizationCanvas3D extends GLCanvas implements GLEventListener, 
         return camera;
     }
 
-    public void setImage(PatternData image) {
+    public void setImage(PatternData3D image) {
         this.data = image;
         fireImageChanged();
     }

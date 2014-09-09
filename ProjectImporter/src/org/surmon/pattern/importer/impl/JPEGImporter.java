@@ -19,10 +19,9 @@ import org.netbeans.api.progress.ProgressHandle;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.openide.util.lookup.ServiceProvider;
-import org.surmon.pattern.api.Dimension3D;
-import org.surmon.pattern.api.PatternData;
-import org.surmon.pattern.api.PatternImage;
+import org.surmon.pattern.api.ImageStack;
 import org.surmon.pattern.api.PDataImporter;
+import org.surmon.pattern.api.PatternImage;
 
 /**
  *
@@ -34,7 +33,7 @@ public class JPEGImporter implements PDataImporter {
     private static final String[] extensions = {"jpg", "jpeg"};
 
     @Override
-    public PatternData importData(String path) {
+    public ImageStack importData(String path) {
         List<PatternImage> images = new ArrayList<>();
         
         for (int id = 1; id < 43; id++) {
@@ -44,10 +43,9 @@ public class JPEGImporter implements PDataImporter {
         }
 
         if (!images.isEmpty()) {
-            int w = images.get(0).getWidth();
-            int h = images.get(0).getHeight();
-            Dimension3D dim = new Dimension3D(w, h, 42);
-            return new PatternData(dim, images);
+            //int w = images.get(0).getWidth();
+            //int h = images.get(0).getHeight();
+            return new ImageStack(images);
         } else {
             return null;
         }

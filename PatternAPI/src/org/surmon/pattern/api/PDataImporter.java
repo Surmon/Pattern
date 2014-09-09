@@ -21,7 +21,7 @@ public interface PDataImporter {
      * @param path File with data to be imported
      * @return imported PatternData stucture
      */
-    public PatternData importData(String path);
+    public ImageStack importData(String path);
     
     /**
      * Extensions this importer can  load.

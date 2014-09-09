@@ -5,7 +5,7 @@
  */
 package org.surmon.pattern.importer.impl;
 
-import java.io.File;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +17,11 @@ import loci.formats.gui.BufferedImageReader;
 import org.netbeans.api.progress.ProgressHandle;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.openide.util.Exceptions;
 import org.openide.util.lookup.ServiceProvider;
 import org.surmon.pattern.api.Dimension3D;
-import org.surmon.pattern.api.PatternData;
-import org.surmon.pattern.api.PatternImage;
-import org.surmon.pattern.api.PatternInfo;
+import org.surmon.pattern.api.ImageStack;
 import org.surmon.pattern.api.PDataImporter;
+import org.surmon.pattern.api.PatternImage;
 import org.surmon.pattern.importer.PDataImporterFactory;
 
 /**
@@ -39,7 +37,7 @@ public class MRCImporter implements PDataImporter {
     private ProgressHandle p;
 
     @Override
-    public PatternData importData(String path) {
+    public ImageStack importData(String path) {
         return importMRC(path);
     }
 
@@ -49,7 +47,7 @@ public class MRCImporter implements PDataImporter {
      * @param file file to import from
      * @return imported data
      */
-    private PatternData importMRC(String path) {
+    private ImageStack importMRC(String path) {
         BufferedImageReader r = new BufferedImageReader();
 
         try {
@@ -69,7 +67,7 @@ public class MRCImporter implements PDataImporter {
             }
             
             r.close();
-            return new PatternData(dim, images);
+            return new ImageStack(images);
 
         } catch (FormatException | IOException ex) {
             Logger.getLogger(PDataImporterFactory.class.getName()).log(Level.SEVERE, null, ex);
