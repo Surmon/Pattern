@@ -119,7 +119,7 @@ public class ImageContainer extends JScrollPane implements ZoomListener, ImageSt
         private final BasicStroke roiStroke = new BasicStroke(1.0f);
         
         private ParticleCreator particleCreator;
-        private RendererSet particleRenderers;
+        private final RendererSet particleRenderers;
 
         public ImagePanel(PatternImage data) {
             setSize(data.getWidth(), data.getHeight());
@@ -238,7 +238,12 @@ public class ImageContainer extends JScrollPane implements ZoomListener, ImageSt
             AffineTransform saveAt = g2.getTransform();
             g2.transform(at);
             for (Particle p : data.getParticles()) {
-                particleRenderers.findRenderer(p).draw(g2, p);
+                ParticleRenderer renderer = particleRenderers.findRenderer(p);
+                if(renderer != null){
+                   renderer.draw(g2, p); 
+                }else{
+                    throw new IllegalStateException("No renderer found for particle: "+ p.getClass().getName());
+                }
             }
             g2.setTransform(saveAt);
         }
