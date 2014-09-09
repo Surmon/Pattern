@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import org.openide.util.lookup.ServiceProvider;
 import org.surmon.pattern.api.Particle;
 import org.surmon.pattern.visualization.api.ParticleRenderer;
 
@@ -16,6 +17,7 @@ import org.surmon.pattern.visualization.api.ParticleRenderer;
  *
  * @author palasjiri
  */
+@ServiceProvider(service = ParticleRenderer.class)
 public class ParticleCircleRenderer implements ParticleRenderer {
     
     private double crossEpsilon = 5;
