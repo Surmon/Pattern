@@ -30,7 +30,7 @@ public interface WorkspaceController {
     
     /**
      * Getts current project.
-     * @return 
+     * @return null if no project is currently in workspace
      */
     public Project getCurrentProject();
     

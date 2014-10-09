@@ -25,7 +25,8 @@ import org.surmon.pattern.api.PatternInfo;
 import org.surmon.pattern.project.api.*;
 
 /**
- *
+ * Represents project node.
+ * 
  * @author palasjiri
  */
 public class ProjectNode extends BeanNode<Project> implements ProjectInfoListener {

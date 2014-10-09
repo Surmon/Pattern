@@ -38,7 +38,7 @@ public interface Project {
      * <p>
      * May contains:
      * <ol>
-     *  <li>{@link PatternData}</li>
+     *  <li>{@link ImageStack}</li>
      * </ol>
      * @return the project's lookup
      */

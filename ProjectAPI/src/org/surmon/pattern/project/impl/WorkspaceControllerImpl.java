@@ -13,12 +13,14 @@ import org.surmon.pattern.project.api.*;
 import org.surmon.pattern.project.spi.ProjectEditorCreator;
 
 /**
- *
+ * Represents the PatternApplication workspace.
+ * 
  * @author palasjiri
  */
 @ServiceProvider(service = WorkspaceController.class)
 public class WorkspaceControllerImpl implements WorkspaceController {
-
+    
+    private int currentProjectIndex;
     private final List<Project> projects = new ArrayList<>();
     private final List<WorkspaceListener> listeners = new ArrayList<>();
 
@@ -35,17 +37,22 @@ public class WorkspaceControllerImpl implements WorkspaceController {
 
     @Override
     public void saveProject(Project project) {
-        
+        throw new UnsupportedOperationException("Saving not implemented");
     }
 
     @Override
     public Project getCurrentProject() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(projects.isEmpty()){
+            return null;
+        }else{
+            return projects.get(currentProjectIndex);
+        }
     }
 
     @Override
     public void closeProject(Project project) {
-
+        TopComponent tc = findTopComponent(project);
+        tc.close();
     }
 
     @Override
@@ -81,7 +88,13 @@ public class WorkspaceControllerImpl implements WorkspaceController {
             listener.workspaceChanged();
         }
     }
-
+    
+    /**
+     * Finds top component for displayed project.
+     * 
+     * @param project
+     * @return 
+     */
     public TopComponent findTopComponent(Project project) {
         Collection<? extends ProjectEditorCreator> editors = Lookup.getDefault().lookupAll(ProjectEditorCreator.class);
         

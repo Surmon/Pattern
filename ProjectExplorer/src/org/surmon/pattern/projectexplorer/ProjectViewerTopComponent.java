@@ -13,7 +13,6 @@ import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
-import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Node;
 import org.openide.util.*;
 import org.openide.util.NbBundle.Messages;
