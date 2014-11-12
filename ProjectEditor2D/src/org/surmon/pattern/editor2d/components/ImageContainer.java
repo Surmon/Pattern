@@ -7,15 +7,13 @@ package org.surmon.pattern.editor2d.components;
 
 import java.awt.AlphaComposite;
 import static java.awt.AlphaComposite.getInstance;
-import static java.awt.AlphaComposite.getInstance;
-import static java.awt.AlphaComposite.getInstance;
-import static java.awt.AlphaComposite.getInstance;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -32,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
+import org.opencv.core.MatOfPoint;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import org.surmon.pattern.api.ImageStack;
@@ -117,7 +116,7 @@ public class ImageContainer extends JScrollPane implements ZoomListener, ImageSt
         private RoiPicker roi = null;
         private final AlphaComposite roiAc = getInstance(AlphaComposite.SRC_OVER, 0.25f);
         private final BasicStroke roiStroke = new BasicStroke(1.0f);
-        
+
         private ParticleCreator particleCreator;
         private final RendererSet particleRenderers;
 
@@ -128,13 +127,13 @@ public class ImageContainer extends JScrollPane implements ZoomListener, ImageSt
             image = ImageConverter.toBufferedImage(data.getPixels());
 
             initTransform();
-            
+
             particleRenderers = new RendererSet();
             Collection<? extends ParticleRenderer> renderes = Lookup.getDefault().lookupAll(ParticleRenderer.class);
             for (ParticleRenderer particleRenderer : renderes) {
                 particleRenderers.registerRenderer(particleRenderer);
             }
-            
+
             addMouseListener(mAdapter);
             addMouseMotionListener(mAdapter);
             addKeyListener(this);
@@ -162,6 +161,7 @@ public class ImageContainer extends JScrollPane implements ZoomListener, ImageSt
 
             drawParticles(g2);
             drawROI(g2);
+            drawMappingBorders(g2);
 
             g2.dispose();
         }
@@ -239,11 +239,31 @@ public class ImageContainer extends JScrollPane implements ZoomListener, ImageSt
             g2.transform(at);
             for (Particle p : data.getParticles()) {
                 ParticleRenderer renderer = particleRenderers.findRenderer(p);
-                if(renderer != null){
-                   renderer.draw(g2, p); 
-                }else{
-                    throw new IllegalStateException("No renderer found for particle: "+ p.getClass().getName());
+                if (renderer != null) {
+                    renderer.draw(g2, p);
+                } else {
+                    throw new IllegalStateException("No renderer found for particle: " + p.getClass().getName());
                 }
+            }
+            g2.setTransform(saveAt);
+        }
+
+        private void drawMappingBorders(Graphics2D g2) {
+            AffineTransform saveAt = g2.getTransform();
+            g2.transform(at);
+            int[] xs;
+            int[] ys;
+            for (MatOfPoint border : data.getMappingBorders()) {
+                int length = border.rows();
+                xs = new int[length];
+                ys = new int[length];
+                for (int i = 0; i < length; i++) {
+                    xs[i] = (int) border.get(i, 0)[0];
+                    ys[i] = (int) border.get(i, 0)[1];
+                }
+                Polygon poly = new Polygon(xs, ys, length);
+                g2.setColor(Color.magenta);
+                g2.drawPolygon(poly);
             }
             g2.setTransform(saveAt);
         }
@@ -400,7 +420,7 @@ public class ImageContainer extends JScrollPane implements ZoomListener, ImageSt
                 // cancel picking or particle adding
                 cancel();
             } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-            // delete particles
+                // delete particles
                 // TODO: User confirmation?
                 data.deleteSelected();
                 repaint();

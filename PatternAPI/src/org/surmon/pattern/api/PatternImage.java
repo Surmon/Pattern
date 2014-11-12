@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.surmon.pattern.api.analysis.Analysis;
 
 /**
@@ -43,6 +44,8 @@ public class PatternImage {
      */
     private final Deque<List<Particle>> history = new ArrayDeque<>();
 
+    private List<MatOfPoint> mappingBorders = new ArrayList<>();
+
     /**
      * Constructs Pattern image decorator class.
      *
@@ -70,12 +73,13 @@ public class PatternImage {
     public void addParticle(Particle detection) {
         particles.add(detection);
     }
-    
+
     /**
      * Adds multiple detections to this image.
-     * @param particles 
+     *
+     * @param particles
      */
-    public void addParticles(Collection<? extends Particle> particles){
+    public void addParticles(Collection<? extends Particle> particles) {
         this.particles.addAll(particles);
     }
 
@@ -95,6 +99,14 @@ public class PatternImage {
      */
     public List<Particle> getParticles() {
         return particles;
+    }
+
+    public List<MatOfPoint> getMappingBorders() {
+        return mappingBorders;
+    }
+
+    public void setMappingBorders(List<MatOfPoint> borders) {
+        this.mappingBorders = borders;
     }
 
     /**
@@ -160,7 +172,7 @@ public class PatternImage {
     public List<Particle> getSelectedParticles() {
         List<Particle> picked = new ArrayList<>();
         for (Particle particle : particles) {
-            if(particle.isPicked()){
+            if (particle.isPicked()) {
                 picked.add(particle);
             }
         }

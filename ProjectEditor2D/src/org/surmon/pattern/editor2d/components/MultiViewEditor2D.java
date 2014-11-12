@@ -5,7 +5,6 @@
  */
 package org.surmon.pattern.editor2d.components;
 
-import org.surmon.pattern.editor2d.components.ImageContainer;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -13,16 +12,31 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.swing.*;
+import javax.swing.Action;
+import javax.swing.BoundedRangeModel;
+import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
+import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.api.progress.ProgressHandleFactory;
-import org.netbeans.core.spi.multiview.*;
+import org.netbeans.core.spi.multiview.CloseOperationState;
+import org.netbeans.core.spi.multiview.MultiViewElement;
+import org.netbeans.core.spi.multiview.MultiViewElementCallback;
+import org.opencv.core.MatOfPoint;
 import org.openide.awt.UndoRedo;
-import org.openide.util.*;
+import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
-import org.openide.util.lookup.*;
+import org.openide.util.lookup.Lookups;
 import org.openide.windows.TopComponent;
 import org.surmon.pattern.api.ImageStack;
 import org.surmon.pattern.api.Particle;
@@ -46,35 +60,35 @@ import org.surmon.pattern.project.api.ProjectInfo;
         position = 10)
 @Messages("LBL_MultiViewEditor2D= 2D")
 public class MultiViewEditor2D extends JPanel implements MultiViewElement, ChangeListener, ActionListener {
-    
+
     /**
      * Callback from TopComponent.
      */
     private MultiViewElementCallback callback = null;
-    
+
     private final String name;
-    
+
     /**
      * Data visualized in this component.
      */
     private ImageStack data;
-    
+
     /**
      * Canvas with visualization. Provides graphical visualization of data and
      * it`s own manipulation.
      */
     private final ImageContainer imageVisualization;
-    
+
     /**
      * List with particle detectors.
      */
     private List<ParticleDetector> detectorList;
 
     /**
-     * In this toolbar 
+     * In this toolbar
      */
     private final JToolBar imageToolbar = new JToolBar();
-    
+
     private BoundedRangeModel imageSliderModel;
     private JSlider imageSlider;
     private JTextField imageTF;
@@ -86,6 +100,7 @@ public class MultiViewEditor2D extends JPanel implements MultiViewElement, Chang
     private JComboBox<String> detectorSelector;
     private JButton deleteSelectedBtn;
     private JToggleButton circlesToggleBtn;
+    private JButton mappingBtn;
 
     /**
      * Zoom model.
@@ -105,36 +120,34 @@ public class MultiViewEditor2D extends JPanel implements MultiViewElement, Chang
     };
 
     public MultiViewEditor2D(Lookup lookup) {
-        data = lookup.lookup(ImageStack.class);  
+        data = lookup.lookup(ImageStack.class);
         name = lookup.lookup(ProjectInfo.class).getDisplayName();
         zoom.registerListener(zoomListener);
-        
+
         // init detectors
         Collection<? extends ParticleDetector> detectors = Lookup.getDefault().lookupAll(ParticleDetector.class);
         detectorList = new ArrayList(detectors);
-        
+
         // init gui
         setLayout(new BorderLayout());
-        
+
         imageVisualization = new ImageContainer(data.getSelectedImage(), zoom);
         zoom.registerListener(imageVisualization);
         data.registerListener(imageVisualization);
-        
+
         add(imageVisualization, BorderLayout.CENTER);
-        
+
         initImageToolbar();
         initToolbar();
-        
-        
+
     }
-    
 
     /**
      * Initializes main toolbar.
      */
     private void initToolbar() {
         toolbar.setFloatable(false);
-        
+
         String[] detectorNames = new String[detectorList.size()];
         for (int i = 0; i < detectorList.size(); i++) {
             ParticleDetector particleDetector = detectorList.get(i);
@@ -142,7 +155,7 @@ public class MultiViewEditor2D extends JPanel implements MultiViewElement, Chang
         }
         detectorSelector = new JComboBox<>(detectorNames);
         toolbar.add(detectorSelector);
-        
+
         // add button for performing detections
         detectBtn = new JButton("Detect");
         detectBtn.addActionListener(this);
@@ -155,6 +168,10 @@ public class MultiViewEditor2D extends JPanel implements MultiViewElement, Chang
         circlesToggleBtn = new JToggleButton("CirclesOn/OFF", true);
         circlesToggleBtn.addActionListener(this);
         toolbar.add(circlesToggleBtn);
+
+        mappingBtn = new JButton("Mapping");
+        mappingBtn.addActionListener(this);
+        toolbar.add(mappingBtn);
     }
 
     /**
@@ -267,23 +284,26 @@ public class MultiViewEditor2D extends JPanel implements MultiViewElement, Chang
             data.getSelectedImage().deleteSelected();
         } else if (e.getSource().equals(circlesToggleBtn)) {
             //canvas.toggleDisplayCircles();
-        } else if(e.getSource().equals(imageTF)){
-            
+        } else if (e.getSource().equals(imageTF)) {
+
+        } else if (e.getSource().equals(mappingBtn)) {
+            mapping();
         }
     }
 
     /**
      * Detects particles in all images within the data. Runs detection in
-     * separate thread. Firstly perform the detection in currently oppened image and then runs the detection in rest images.
-     * After the process is done it invokes the repaint of displayed image.
-     * 
+     * separate thread. Firstly perform the detection in currently oppened image
+     * and then runs the detection in rest images. After the process is done it
+     * invokes the repaint of displayed image.
+     *
      */
     private void detectParticles() {
-        
+
         final int index = data.getSelectedImageIndex();
         final int detectorIndex = detectorSelector.getSelectedIndex();
         final ParticleDetector selectedParticleDetector = detectorList.get(detectorIndex);
-        
+
         SwingWorker worker = new SwingWorker<Void, Void>() {
 
             @Override
@@ -291,25 +311,68 @@ public class MultiViewEditor2D extends JPanel implements MultiViewElement, Chang
                 int progress = 0;
                 ProgressHandle ph = ProgressHandleFactory.createHandle("Detecting particles ...");
                 ph.start(data.getImageCount());
-                
+
                 List<? extends Particle> pList;
-                
+
                 // first detect opened to provide better UX
                 PatternImage selectedImage = data.getImage(index);
                 pList = selectedParticleDetector.detectIn(data.getImage(index));
                 selectedImage.addParticles(pList);
                 imageVisualization.refresh();
                 ph.progress(++progress);
-                
+
                 // detect in the rest images
                 for (PatternImage image : data.getImages()) {
-                    if(image.getDepth() != index){
+                    if (image.getDepth() != index) {
                         pList = selectedParticleDetector.detectIn(image);
                         image.addParticles(pList);
                         ph.progress(++progress);
                     }
                 }
-                
+
+                ph.finish();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                imageVisualization.refresh();
+            }
+
+        };
+
+        worker.execute();
+    }
+
+    private void mapping() {
+        final int index = data.getSelectedImageIndex();
+
+        SwingWorker worker = new SwingWorker<Void, Void>() {
+
+            @Override
+            protected Void doInBackground() throws Exception {
+                int progress = 0;
+                ProgressHandle ph = ProgressHandleFactory.createHandle("Performing mapping ...");
+                ph.start(data.getImageCount());
+
+                // first detect opened to provide better UX
+                PatternImage selectedImage = data.getImage(index);
+
+                // TODO: create method performing mapping
+                List<MatOfPoint> borders = Mapping.process(selectedImage.getPixels(), selectedImage.getParticles());
+                selectedImage.setMappingBorders(borders);
+                imageVisualization.refresh();
+                ph.progress(++progress);
+
+                // detect in the rest images
+                for (PatternImage image : data.getImages()) {
+                    if (image.getDepth() != index) {
+                        borders = Mapping.process(image.getPixels(), image.getParticles());
+                        image.setMappingBorders(borders);
+                        ph.progress(++progress);
+                    }
+                }
+
                 ph.finish();
                 return null;
             }
